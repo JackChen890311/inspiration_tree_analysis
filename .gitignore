@@ -1,0 +1,5 @@
+experiments/
+experiment_data/
+
+# conceptor
+clip_text_encoding.pt
