@@ -93,7 +93,7 @@ class DiffusionUtils:
         
         Args:
             vae: The variational autoencoder (VAE) model.
-            latent: A numpy array representing the latent, with shape (B, H, W//8, C//8).
+            latent: A numpy array representing the latent, with shape (B, H//8, W//8, C).
             
         Returns:
             image: The decoded image representation.

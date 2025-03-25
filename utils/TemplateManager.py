@@ -1,6 +1,7 @@
 import random
 
 class TemplateManager:
+    # https://github.com/NeuralTextualInversion/NeTI/blob/main/constants.py
     RECONTEXTUAL = [
         "A photo of a {}",
         "A photo of {} in the jungle",

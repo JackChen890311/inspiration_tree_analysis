@@ -12,22 +12,23 @@ def add_title(image, text, font=cv2.FONT_HERSHEY_SIMPLEX, font_scale=1, thicknes
     cv2.putText(title_image, text, (10, 35), font, font_scale, (255, 255, 255), thickness, cv2.LINE_AA)
     return np.vstack((title_image, image))  # Stack the title on top of the image
 
-def make_gif(in_path, out_path):
+def make_gif(in_path, out_path_name, duration):
     images = []
     for filename in sorted(os.listdir(in_path), key=lambda x: int(x.split('.')[0].split('_')[1])):
         if filename.endswith(".png") or filename.endswith(".jpg"):
             img_path = os.path.join(in_path, filename)
             image = cv2.imread(img_path)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB for imageio
-            image_with_title = add_title(image, f"Timestep {filename.split('.')[0].split('_')[1]}")
+            image_with_title = add_title(image, f"Training Step {filename.split('.')[0].split('_')[1]}")
             images.append(image_with_title)
 
-    imageio.mimsave(os.path.join(out_path, 'result.gif'), images, duration=0.5)
+    imageio.mimsave(out_path_name, images, duration=duration)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=str, help="Path to image folder")
-    parser.add_argument("--output", type=str, help="Path to output folder")
+    parser.add_argument("--output", type=str, help="File name to output folder")
+    parser.add_argument("--duration", type=float, default=0.5, help="Duration of each frame in seconds")
     args = parser.parse_args()
 
-    make_gif(args.input, args.output)
+    make_gif(args.input, args.output, args.duration)
