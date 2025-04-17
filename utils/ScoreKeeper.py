@@ -39,6 +39,7 @@ class ScoreKeeper:
         plt.show()
 
     def __str__(self):
+        self.plot(size=(3, 2), title=f"{self.base_path}/{self.concept}/{self.node}/seed_{self.seed}")
         return f"""
 Concept: {self.concept}
 Base Path: {self.base_path}
@@ -46,11 +47,13 @@ Node: {self.node}
 Seed: {self.seed}
 Consistency Score (Final): {self.final_score}
 """
-    
+
 
 def load_score_keepers(path, node) -> List[ScoreKeeper]:
     score_keeper_dict = {}
     for concept in os.listdir(path):
+        if not os.path.isdir(os.path.join(path, concept)):
+            continue
         score_keeper = None
         for seed in os.listdir(os.path.join(path, concept, node)):
             try:
@@ -61,3 +64,20 @@ def load_score_keepers(path, node) -> List[ScoreKeeper]:
                 continue
         score_keeper_dict[concept] = score_keeper
     return score_keeper_dict
+
+
+def load_exp(dataset_name, exp_date_name, node_name = "v0"):
+    """
+    Load the score keepers for a given experiment date and dataset name.
+    
+    Args:
+        dataset_name (str): The name of the dataset.
+        exp_date_name (str): The date and name of the experiment.
+        node_name (str): The name of the node. Default is "v0".
+    
+    Returns:
+        list: A list of score keepers.
+    """
+    exp_path = f"experiments/{dataset_name}/{exp_date_name}/outputs"
+    sk_list = load_score_keepers(exp_path, node_name)
+    return sk_list

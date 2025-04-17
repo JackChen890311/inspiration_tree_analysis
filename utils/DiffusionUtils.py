@@ -1,3 +1,5 @@
+import os
+import cv2
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,7 +29,7 @@ class DiffusionUtils:
     orig_embeddings = pipe.text_encoder.text_model.embeddings.token_embedding.weight.clone().detach()
 
     @classmethod
-    def run_prompt(cls, prompt, num_images_per_seed, seed=0):
+    def run_prompt(cls, prompt, num_images_per_seed, output_path=None, seed=0):
         with torch.no_grad():
             torch.manual_seed(seed)
             images = cls.pipe(prompt=[prompt] * num_images_per_seed, num_inference_steps=25, guidance_scale=7.5).images
@@ -37,6 +39,12 @@ class DiffusionUtils:
             plt.axis("off")
             plt.title(prompt)
             plt.show()
+
+        out_size = np_images.shape[0] # 512
+        if output_path is not None:
+            for i in range(num_images_per_seed):
+                file_path = os.path.join(output_path, f"{prompt}_{i}.png")
+                cv2.imwrite(file_path, cv2.cvtColor(np_images[:, out_size*i:out_size*(i+1), :], cv2.COLOR_RGB2BGR))
 
     @classmethod
     def add_new_vocab(cls, placeholder_token, embeddings):
