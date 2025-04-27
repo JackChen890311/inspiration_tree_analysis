@@ -29,21 +29,23 @@ class DiffusionUtils:
     orig_embeddings = pipe.text_encoder.text_model.embeddings.token_embedding.weight.clone().detach()
 
     @classmethod
-    def run_prompt(cls, prompt, num_images_per_seed, output_path=None, seed=0):
+    def run_prompt(cls, prompt, num_images_per_seed, output_path=None, seed=0, name_offset=0):
         with torch.no_grad():
             torch.manual_seed(seed)
             images = cls.pipe(prompt=[prompt] * num_images_per_seed, num_inference_steps=25, guidance_scale=7.5).images
             np_images = np.hstack([np.asarray(img) for img in images])
+         
+        if not output_path:
             plt.figure(figsize=(10,10))
             plt.imshow(np_images)
             plt.axis("off")
             plt.title(prompt)
             plt.show()
-
-        out_size = np_images.shape[0] # 512
-        if output_path is not None:
+        else:
+            out_size = np_images.shape[0] # 512
+            os.makedirs(output_path, exist_ok=True)
             for i in range(num_images_per_seed):
-                file_path = os.path.join(output_path, f"{prompt}_{i}.png")
+                file_path = os.path.join(output_path, f"{prompt}_{i + name_offset}.png")
                 cv2.imwrite(file_path, cv2.cvtColor(np_images[:, out_size*i:out_size*(i+1), :], cv2.COLOR_RGB2BGR))
 
     @classmethod

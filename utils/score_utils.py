@@ -11,7 +11,7 @@ def get_average(score_keeper_dict, type):
     average = [score / len(score_keeper_list) for score in average]
     return average 
 
-def get_average_final(score_keeper_dict, type):
+def get_average_last(score_keeper_dict, type):
     return get_average(score_keeper_dict, type)[-1]
 
 def get_variance(score_keeper_dict, type):
@@ -27,7 +27,7 @@ def get_variance(score_keeper_dict, type):
             variance[i] += (score_keeper.mapping[type][i] - average[i]) ** 2
     return [score / (n - 1) for score in variance]
     
-def get_variance_final(score_keeper_dict, type):
+def get_variance_last(score_keeper_dict, type):
     return get_variance(score_keeper_dict, type)[-1]
 
 def plot_one_exp(score_keeper_dict, types=['final'], size=(10, 5), title='Consistency Score Comparison'):
@@ -107,8 +107,15 @@ def summary_exp(sk_list, exp_name):
     """
     print(f"Summary for {exp_name}:")
     print(sk_list.keys())
-    print(get_average_final(sk_list, type='final'))
-    print(get_variance_final(sk_list, type='final'))
+    print("Average final score:")
+    print(get_average_last(sk_list, type='final'))
+    print(get_variance_last(sk_list, type='final'))
+    print("Average in score:")
+    print(get_average_last(sk_list, type='in'))
+    print(get_variance_last(sk_list, type='in'))
+    print("Average cross score:")
+    print(get_average_last(sk_list, type='cross'))
+    print(get_variance_last(sk_list, type='cross'))
 
 def get_concept_score(list_of_sk_list, concept_name):
     for sk_list in list_of_sk_list:
