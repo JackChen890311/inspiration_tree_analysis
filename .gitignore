@@ -1,6 +1,8 @@
 experiments/
 experiment_data/
 experiment_image/
+old_experiments/
+old_experiment_image/
 
 # conceptor
 clip_text_encoding.pt

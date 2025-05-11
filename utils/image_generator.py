@@ -1,3 +1,4 @@
+import os
 import argparse
 import tqdm
 import torch
@@ -18,7 +19,9 @@ def parse_args():
 def image_generator(args):
     exp_path = f"/home/jack/Code/Research/instree_analysis/experiments/{args.dataset_name}/{args.exp_name}"
     
-    for cpt_name in tqdm.tqdm(list_concept_names(args.dataset_name)):
+    for cpt_name in tqdm.tqdm(os.listdir(exp_path + "/outputs")):
+        if not os.path.isdir(exp_path + "/outputs/" + cpt_name):
+            continue
         if args.multiseed:
             concept_path = f"{exp_path}/outputs/{cpt_name}/v0/learned_embeds.bin"
         else:

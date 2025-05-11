@@ -2,13 +2,17 @@
 
 # If evaluate for instree, please un-comment the --multiseed option
 DATASET_NAME="v2_sub_clip"
-EXP_NAME="20250427_0426_0.95"
-EXP_SEED="111"
+# For experiments in test folder
+MASKED_IMG_DIRNAME="dog_backpack_1_image"
+# For experiments of dataset
+MASKED_IMG_DIRNAME=$DATASET_NAME
+EXP_NAME="20250511_mask_with_origin"
+EXP_SEED="0"
 
 BASE_DIR="/home/jack/Code/Research/instree_analysis/experiment_image"
 SCRIPT_DIR="/home/jack/Code/Research/instree_analysis"
 EXP_IMG_DIR="${BASE_DIR}/${DATASET_NAME}/${EXP_NAME}"
-ORIGIN_IMG_DIR="${BASE_DIR}/${DATASET_NAME}/${DATASET_NAME}_masked"
+ORIGIN_IMG_DIR="${BASE_DIR}/${DATASET_NAME}/${MASKED_IMG_DIRNAME}_masked"
 OUTPUT_DIR="${BASE_DIR}/scores/${DATASET_NAME}"
 
 # Generate images

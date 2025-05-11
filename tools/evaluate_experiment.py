@@ -39,7 +39,7 @@ def evaluate_experiments(args):
 
         ARGS.folder1 = os.path.join(exp_img_dir, cpt_name, "v1")
         ARGS.folder2 = os.path.join(exp_img_dir, cpt_name, "v2")
-        distinction_score = - score_calculation(ARGS)
+        distinction_score = score_calculation(ARGS)
 
         ARGS.folder1 = os.path.join(origin_img_dir, cpt_name, "v0")
         ARGS.folder2 = os.path.join(exp_img_dir, cpt_name, "v1")

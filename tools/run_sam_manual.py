@@ -137,8 +137,11 @@ def load_image(image_path):
 
 
 if __name__ == "__main__":
-    base_path = "/home/jack/Code/Research/instree_analysis/experiment_image/v2/v2"
-    result_path = "/home/jack/Code/Research/instree_analysis/experiment_image/v2/v2_mask"
+    dataset_name = "test"
+    image_folder_name = "20250505_instree_1_image"
+    # image_folder_name = dataset_name
+    base_path = f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}"
+    result_path = f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}_mask"
     if not os.path.exists(result_path):
         os.makedirs(result_path)
 

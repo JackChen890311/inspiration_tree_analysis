@@ -95,35 +95,35 @@ def init_latent(latent, model, height, width, generator, batch_size):
     return latent, latents
 
 
-@torch.no_grad()
-def text2image_ldm(
-    model,
-    prompt:  List[str],
-    controller,
-    num_inference_steps: int = 50,
-    guidance_scale: Optional[float] = 7.,
-    generator: Optional[torch.Generator] = None,
-    latent: Optional[torch.FloatTensor] = None,
-):
-    register_attention_control(model, controller)
-    height = width = 256
-    batch_size = len(prompt)
+# @torch.no_grad()
+# def text2image_ldm(
+#     model,
+#     prompt:  List[str],
+#     controller,
+#     num_inference_steps: int = 50,
+#     guidance_scale: Optional[float] = 7.,
+#     generator: Optional[torch.Generator] = None,
+#     latent: Optional[torch.FloatTensor] = None,
+# ):
+#     register_attention_control(model, controller)
+#     height = width = 256
+#     batch_size = len(prompt)
     
-    uncond_input = model.tokenizer([""] * batch_size, padding="max_length", max_length=77, return_tensors="pt")
-    uncond_embeddings = model.bert(uncond_input.input_ids.to(model.device))[0]
+#     uncond_input = model.tokenizer([""] * batch_size, padding="max_length", max_length=77, return_tensors="pt")
+#     uncond_embeddings = model.bert(uncond_input.input_ids.to(model.device))[0]
     
-    text_input = model.tokenizer(prompt, padding="max_length", max_length=77, return_tensors="pt")
-    text_embeddings = model.bert(text_input.input_ids.to(model.device))[0]
-    latent, latents = init_latent(latent, model, height, width, generator, batch_size)
-    context = torch.cat([uncond_embeddings, text_embeddings])
+#     text_input = model.tokenizer(prompt, padding="max_length", max_length=77, return_tensors="pt")
+#     text_embeddings = model.bert(text_input.input_ids.to(model.device))[0]
+#     latent, latents = init_latent(latent, model, height, width, generator, batch_size)
+#     context = torch.cat([uncond_embeddings, text_embeddings])
     
-    model.scheduler.set_timesteps(num_inference_steps)
-    for t in tqdm(model.scheduler.timesteps):
-        latents = diffusion_step(model, controller, latents, context, t, guidance_scale)
+#     model.scheduler.set_timesteps(num_inference_steps)
+#     for t in tqdm(model.scheduler.timesteps):
+#         latents = diffusion_step(model, controller, latents, context, t, guidance_scale)
     
-    image = latent2image(model.vqvae, latents)
+#     image = latent2image(model.vqvae, latents)
    
-    return image, latent
+#     return image, latent
 
 
 @torch.no_grad()

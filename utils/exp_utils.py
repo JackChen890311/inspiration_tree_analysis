@@ -15,8 +15,8 @@ def list_exp_names(dataset_name):
     if ".DS_Store" in exp_names:
         exp_names.remove(".DS_Store")
     print(f"===== Experiment names for {dataset_name}: =====")
-    for name in exp_names:
-        print(name)
+    for i, name in enumerate(exp_names):
+        print(i, name)
     print(f"===== Total experiments: {len(exp_names)} =====")
     return exp_names
 

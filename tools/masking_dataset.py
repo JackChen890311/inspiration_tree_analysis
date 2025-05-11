@@ -5,10 +5,12 @@ import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Apply mask to images and save them.")
-    dataset_name = "v2_sub_clip"
-    parser.add_argument("--original_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{dataset_name}", help="Path to the original images folder.")
-    parser.add_argument("--mask_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{dataset_name}_mask", help="Path to the mask images folder.")
-    parser.add_argument("--output_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{dataset_name}_masked", help="Path to save the masked images.")
+    dataset_name = "test"
+    image_folder_name = "20250505_instree_1_image"
+    # image_folder_name = dataset_name
+    parser.add_argument("--original_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}", help="Path to the original images folder.")
+    parser.add_argument("--mask_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}_mask", help="Path to the mask images folder.")
+    parser.add_argument("--output_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}_masked", help="Path to save the masked images.")
     return parser.parse_args()
 
 def apply_mask_and_save(args):
