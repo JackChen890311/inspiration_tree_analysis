@@ -1,13 +1,24 @@
 #!/bin/bash
 
-# If evaluate for instree, please un-comment the --multiseed option
+# Please check the following variables
 DATASET_NAME="v2_sub_clip"
-# For experiments in test folder
-MASKED_IMG_DIRNAME="dog_backpack_1_image"
-# For experiments of dataset
-MASKED_IMG_DIRNAME=$DATASET_NAME
-EXP_NAME="20250511_mask_with_origin"
-EXP_SEED="0"
+if [ "$DATASET_NAME" == "test" ]; then
+    # For experiments in test folder
+    MASKED_IMG_DIRNAME="dog_backpack_1_image"
+else
+    # For experiments of dataset
+    MASKED_IMG_DIRNAME=$DATASET_NAME
+fi
+EXP_NAME="20250425_instree_fixed"
+IS_MULTISEED=true
+if [ "$IS_MULTISEED" = true ]; then
+    # For experiments of multiple seeds
+    EXP_SEED="-1"
+else
+    # For experiments of single seed
+    EXP_SEED="0"
+fi
+# ======================================
 
 BASE_DIR="/home/jack/Code/Research/instree_analysis/experiment_image"
 SCRIPT_DIR="/home/jack/Code/Research/instree_analysis"
@@ -17,19 +28,22 @@ OUTPUT_DIR="${BASE_DIR}/scores/${DATASET_NAME}"
 
 # Generate images
 cd "$SCRIPT_DIR" || exit
-python utils/image_generator.py \
-    --dataset_name "$DATASET_NAME" \
-    --exp_name "$EXP_NAME" \
-    --exp_seed "$EXP_SEED" \
-    # --multiseed
+if [ "$EXP_SEED" == "-1" ]; then
+    python utils/image_generator.py \
+        --dataset_name "$DATASET_NAME" \
+        --exp_name "$EXP_NAME" \
+        --exp_seed "$EXP_SEED" \
+        --multiseed
+else
+    python utils/image_generator.py \
+        --dataset_name "$DATASET_NAME" \
+        --exp_name "$EXP_NAME" \
+        --exp_seed "$EXP_SEED"
+fi
 
-# Evaluate with different models
-for MODEL in clip dino
-do
-    echo "Start evaluating with model: $MODEL"
-    python tools/evaluate_experiment.py \
-        --exp_img_dir "$EXP_IMG_DIR" \
-        --origin_img_dir "$ORIGIN_IMG_DIR" \
-        --output_dir "$OUTPUT_DIR" \
-        --model_type "$MODEL"
-done
+echo "Start evaluating..."
+python tools/evaluate_experiment.py \
+    --exp_img_dir "$EXP_IMG_DIR" \
+    --origin_img_dir "$ORIGIN_IMG_DIR" \
+    --output_dir "$OUTPUT_DIR" \
+    --model_type "clip"
