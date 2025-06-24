@@ -9,8 +9,8 @@ else
     # For experiments of dataset
     MASKED_IMG_DIRNAME=$DATASET_NAME
 fi
-EXP_NAME="20250425_instree_fixed"
-IS_MULTISEED=true
+EXP_NAME="20250524_last_rand_exp"
+IS_MULTISEED=false
 if [ "$IS_MULTISEED" = true ]; then
     # For experiments of multiple seeds
     EXP_SEED="-1"

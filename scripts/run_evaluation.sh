@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Please check the following variables
-DATASET_NAME="v2_sub_clip"
+DATASET_NAME="v5_sub_clip"
 if [ "$DATASET_NAME" == "test" ]; then
     # For experiments in test folder
     MASKED_IMG_DIRNAME="dog_backpack_1_image"
@@ -9,7 +9,7 @@ else
     # For experiments of dataset
     MASKED_IMG_DIRNAME=$DATASET_NAME
 fi
-EXP_NAME="20250425_instree_fixed"
+EXP_NAME="20250527_v2_0524"
 IS_MULTISEED=true
 if [ "$IS_MULTISEED" = true ]; then
     # For experiments of multiple seeds

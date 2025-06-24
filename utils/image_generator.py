@@ -14,17 +14,15 @@ def parse_args():
     parser.add_argument('--gen_seeds', type=int, nargs='+', default=[4321, 95, 11, 87654], help='List of generation seeds')
     parser.add_argument('--num_images_per_seed', type=int, default=10, help='Number of images per seed')
     parser.add_argument('--emb_name', type=str, default="learned_embeds.bin", help='Embedding name')
+    parser.add_argument('--run_both_tokens', action='store_true', help='Use both tokens for generation')
     return parser.parse_args()
 
 
 def image_generator(args):
     exp_path = f"/home/jack/Code/Research/instree_analysis/experiments/{args.dataset_name}/{args.exp_name}"
     final_out_path = f"{args.out_path}/{args.dataset_name}/{args.exp_name}"
-    if os.path.exists(final_out_path):
-        print(f"Output path {final_out_path} already exists. Please remove it before running the script.")
-        return
     
-    for cpt_name in tqdm.tqdm(os.listdir(exp_path + "/outputs")):
+    for cpt_name in tqdm.tqdm(sorted(os.listdir(exp_path + "/outputs"))):
         if not os.path.isdir(exp_path + "/outputs/" + cpt_name):
             continue
         if args.multiseed:
@@ -55,6 +53,12 @@ def image_generator(args):
                 f"{final_out_path}/{cpt_name}/v2",
                 seed, i * args.num_images_per_seed
             )
+            if args.run_both_tokens:
+                DiffusionUtils.run_prompt(
+                    "<*> <&>", args.num_images_per_seed,
+                    f"{final_out_path}/{cpt_name}/v1v2",
+                    seed, i * args.num_images_per_seed
+                )
 
 if __name__ == "__main__":
     args = parse_args()
