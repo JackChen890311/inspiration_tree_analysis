@@ -6,6 +6,7 @@ old_experiment_image/
 new_experiments/
 new_experiment_data/
 new_experiment_image/
+output_for_tagging/
 
 # conceptor
 clip_text_encoding.pt

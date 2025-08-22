@@ -5,8 +5,8 @@ import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Apply mask to images and save them.")
-    dataset_name = "test"
-    image_folder_name = "20250505_instree_1_image"
+    dataset_name = "InsData_clip_min"
+    image_folder_name = "InsData_clip_min"
     # image_folder_name = dataset_name
     parser.add_argument("--original_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}", help="Path to the original images folder.")
     parser.add_argument("--mask_folder", type=str, default=f"/home/jack/Code/Research/instree_analysis/experiment_image/{dataset_name}/{image_folder_name}_mask", help="Path to the mask images folder.")
@@ -17,6 +17,10 @@ def apply_mask_and_save(args):
     original_folder = args.original_folder
     mask_folder = args.mask_folder
     output_folder = args.output_folder
+    print(f"Original folder: {original_folder}"
+          f"\nMask folder: {mask_folder}"
+          f"\nOutput folder: {output_folder}"
+    )
 
     for root, _, files in os.walk(original_folder):
         for file in files:

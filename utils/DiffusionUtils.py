@@ -10,7 +10,7 @@ from diffusers import StableDiffusionPipeline
 class DiffusionUtils:
     pretrained_model_name_or_path = "runwayml/stable-diffusion-v1-5"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    weight_dtype = torch.float16
+    weight_dtype = torch.float32
 
     pipe = StableDiffusionPipeline.from_pretrained(
         pretrained_model_name_or_path, 
@@ -116,3 +116,28 @@ class DiffusionUtils:
         image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
         image = (image * 255).astype(np.uint8)
         return image
+
+    @classmethod
+    def calculate_token_cosine_similarity(cls, target_token, top_k=10):
+        tokenized_token = cls.pipe.tokenizer.tokenize(target_token)
+        target_id = cls.pipe.tokenizer.convert_tokens_to_ids(tokenized_token)
+        embedding = cls.pipe.text_encoder.get_input_embeddings().weight
+        target_embedding = embedding[target_id[0]]
+        device = embedding.device
+
+        embedding = torch.nn.functional.normalize(embedding, dim=1, eps=1e-8)
+        target_embedding = torch.nn.functional.normalize(target_embedding, dim=0, eps=1e-8).unsqueeze(0)
+        similarities = torch.cosine_similarity(target_embedding, embedding, dim=1)
+
+        k = min(top_k + 1, len(similarities))
+        top_similarities, top_indices = torch.topk(similarities, k=k)
+        top_similarities = top_similarities[1:]
+        top_indices = top_indices[1:]
+
+        results = []
+        for sim, idx in zip(top_similarities, top_indices):
+            token_id = idx.cpu().item()
+            token = cls.pipe.tokenizer.convert_ids_to_tokens([token_id])[0]
+            results.append((token, sim.cpu().item()))
+
+        return results
